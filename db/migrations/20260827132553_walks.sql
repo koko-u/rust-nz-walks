@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS "walks"
     "created_at"  TIMESTAMPTZ      NOT NULL DEFAULT now(),
     "updated_at"  TIMESTAMPTZ      NOT NULL DEFAULT now(),
     CONSTRAINT "walks_pkey" PRIMARY KEY ("id"),
-    CONSTRAINT "fk_walks_region_id" FOREIGN KEY ("region_id") REFERENCES "walks" ("id") ON DELETE CASCADE
+    CONSTRAINT "fk_walks_region_id" FOREIGN KEY ("region_id") REFERENCES "regions" ("id") ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS "idx_walks_name" ON "walks" ("name");
