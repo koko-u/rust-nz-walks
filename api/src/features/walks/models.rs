@@ -1,6 +1,6 @@
 mod difficulty;
-mod region;
 mod walk;
+mod walk_id;
 
 pub use difficulty::Difficulty;
-pub use region::Region;
+pub use walk_id::WalkId;

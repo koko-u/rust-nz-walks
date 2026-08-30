@@ -4,3 +4,4 @@ pub mod handlers;
 mod rows;
 mod repositories;
 mod requests;
+mod commands;

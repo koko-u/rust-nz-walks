@@ -1,19 +1,35 @@
 use uom::si;
 
-use super::Difficulty;
-use super::Region;
+use crate::features::regions::models as r_models;
+use crate::features::walks::models;
+use crate::features::walks::rows;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Walk {
-    pub id: uuid::Uuid,
+    pub id: models::WalkId,
     pub name: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub length: Option<si::f64::Length>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub image_url: Option<String>,
-    pub region: Region,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub difficulty: Option<Difficulty>,
+    pub region: r_models::Region,
+    pub difficulty: Option<models::Difficulty>,
+}
+
+impl From<rows::WalkRow> for Walk {
+    fn from(row: rows::WalkRow) -> Self {
+        Self {
+            id: row.id.into(),
+            name: row.name,
+            description: row.description,
+            length: row.length_km.map(si::f64::Length::new::<si::length::kilometer>),
+            image_url: row.image_url,
+            region: r_models::Region {
+                id: row.region_id.into(),
+                code: row.region_code,
+                name: row.region_name,
+                image_url: row.region_image_url,
+            },
+            difficulty: row.difficulty,
+        }
+    }
 }

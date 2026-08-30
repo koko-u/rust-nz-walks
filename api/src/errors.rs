@@ -1,3 +1,4 @@
+use axum::http;
 use axum::response;
 
 use crate::shared;
@@ -8,6 +9,8 @@ pub enum ApiError {
     DB(#[error(source)] sqlx::Error),
     #[display("Validation error: {}", _0)]
     Validation(#[error(source)] garde::Report),
+    #[display("Not found: {}", message)]
+    NotFound { message: String },
 }
 
 impl response::IntoResponse for ApiError {
@@ -15,12 +18,17 @@ impl response::IntoResponse for ApiError {
         match &self {
             Self::DB(err) => {
                 tracing::error!("Database error: {err:?}");
-                (axum::http::StatusCode::INTERNAL_SERVER_ERROR, self.to_string()).into_response()
+                (http::StatusCode::INTERNAL_SERVER_ERROR, self.to_string()).into_response()
             }
             Self::Validation(err) => {
                 tracing::error!("Validation error: {err:?}");
                 let problem_details = shared::ProblemDetails::from(err);
                 (problem_details.status, axum::Json(problem_details)).into_response()
+            }
+            Self::NotFound { message } => {
+                tracing::error!("Not found: {message}");
+
+                (http::StatusCode::NOT_FOUND, axum::Json(self.to_string())).into_response()
             }
         }
     }

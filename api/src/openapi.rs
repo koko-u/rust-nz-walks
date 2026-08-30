@@ -1,6 +1,13 @@
-use crate::features::students::__path_get_all_students;
-use crate::routers::__path_index;
+use crate::features::health_check::handlers::*;
+use crate::features::regions::handlers::*;
 
 #[derive(utoipa::OpenApi)]
-#[openapi(paths(index, get_all_students,))]
+#[openapi(paths(
+    health_check,
+    get_all_regions,
+    get_single_region,
+    create_region,
+    update_region,
+    delete_region
+))]
 pub struct ApiDoc;
