@@ -9,7 +9,6 @@
     derive_more::Display,
     derive_more::From,
     derive_more::FromStr,
-    derive_more::Into,
     serde::Serialize,
     serde::Deserialize,
     utoipa::ToSchema,
@@ -18,3 +17,9 @@
 #[serde(transparent)]
 #[schema(value_type = uuid::Uuid)]
 pub struct RegionId(uuid::Uuid);
+
+impl RegionId {
+    pub fn into_inner(self) -> uuid::Uuid {
+        self.0
+    }
+}

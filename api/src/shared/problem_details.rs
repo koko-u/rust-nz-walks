@@ -9,8 +9,21 @@ pub struct ProblemDetails {
     #[serde(serialize_with = "se_status")]
     #[schema(value_type = String)]
     pub status: http::StatusCode,
+    #[serde(skip_serializing_if = "Option::is_some")]
     pub detail: Option<String>,
-    pub errors: FieldErrors,
+    #[serde(skip_serializing_if = "Option::is_some")]
+    pub errors: Option<FieldErrors>,
+}
+
+impl ProblemDetails {
+    pub fn simple(title: &str, status_code: http::StatusCode) -> Self {
+        ProblemDetails {
+            title: title.to_string(),
+            status: status_code,
+            detail: None,
+            errors: None,
+        }
+    }
 }
 
 impl<R> From<R> for ProblemDetails
@@ -30,14 +43,12 @@ where
             },
         ); //.map(|(field, error)| (field.to_string(), error.to_string())));
 
-        let problem_details = ProblemDetails {
+        ProblemDetails {
             title: "Validation error".to_string(),
             status: http::StatusCode::BAD_REQUEST,
             detail: Some(report.to_string()),
-            errors: field_errors.into(),
-        };
-
-        problem_details
+            errors: Some(FieldErrors::from(field_errors)),
+        }
     }
 }
 

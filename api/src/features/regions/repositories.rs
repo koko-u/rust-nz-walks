@@ -18,7 +18,7 @@ pub async fn get_single_region<'c, E>(
 where
     E: sqlx::Executor<'c, Database=sqlx::Postgres>,
 {
-    let id: uuid::Uuid = id.into();
+    let id = id.into_inner();
     sqlx::query_file_as!(rows::RegionRow, "sql/regions/select_by_id.sql", id)
         .fetch_optional(executor)
         .await
@@ -49,7 +49,7 @@ pub async fn update_region<'c, E>(
 where
     E: sqlx::Executor<'c, Database=sqlx::Postgres>,
 {
-    let id: uuid::Uuid = data.id.into();
+    let id = data.id.into_inner();
     sqlx::query_file_as!(
         rows::RegionRow,
         "sql/regions/update_by_id.sql",
@@ -69,7 +69,7 @@ pub async fn delete_region<'c, E>(
 where
     E: sqlx::Executor<'c, Database=sqlx::Postgres>,
 {
-    let id: uuid::Uuid = id.into();
+    let id = id.into_inner();
 
     sqlx::query_file_as!(rows::RegionRow, "sql/regions/delete_by_id.sql", id)
         .fetch_optional(executor)
