@@ -6,3 +6,4 @@ mod repositories;
 mod requests;
 mod commands;
 mod dto;
+pub mod validators;

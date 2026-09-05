@@ -12,5 +12,8 @@ use crate::features::walks::handlers::*;
     delete_region,
     create_walk,
     get_all_walks,
+    get_walk_by_id,
+    update_walk,
+    delete_by_id,
 ))]
 pub struct ApiDoc;

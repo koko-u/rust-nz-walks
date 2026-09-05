@@ -5,7 +5,7 @@ use crate::features::walks::models;
 use crate::features::walks::validators;
 
 #[derive(Debug, Clone, PartialEq, serde::Deserialize, garde::Validate, utoipa::ToSchema)]
-pub struct CreateRequest {
+pub struct UpdateRequest {
     #[garde(required, length(min = 1, max = 255))]
     pub name: Option<String>,
     #[garde(length(max = 4000))]
@@ -20,15 +20,16 @@ pub struct CreateRequest {
     pub difficulty: Option<String>,
 }
 
-impl CreateRequest {
-    pub fn validate_into(self) -> Result<commands::CreateCommand, garde::Report> {
+impl UpdateRequest {
+    pub fn validate_into(self, id: models::WalkId) -> Result<commands::UpdateCommand, garde::Report> {
         self.validate()?;
         let difficulty = self.difficulty.map(|d| {
             serde_json::from_value::<models::Difficulty>(serde_json::Value::String(d))
                 .expect("difficulty value passed the validation, but cannot convert into models::Difficulty")
         });
 
-        Ok(commands::CreateCommand {
+        Ok(commands::UpdateCommand {
+            id,
             name: self
                 .name
                 .expect("name is required, but skip the validation. unexpectedly"),
@@ -42,5 +43,4 @@ impl CreateRequest {
         })
     }
 }
-
 

@@ -14,7 +14,7 @@ use crate::state;
     ),
     tag = "Regions",
     responses(
-        (status = 200, description = "Returns a list of regions", body = Vec<models::Region>),
+        (status = 200, description = "Returns a signle regions", body = models::Region),
         (status = 404, description = "Region not found", body = String),
         (status = 500, description = "Internal Server Error", body = shared::ProblemDetails)
     )

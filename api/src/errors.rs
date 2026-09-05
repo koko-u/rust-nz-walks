@@ -29,12 +29,12 @@ impl response::IntoResponse for ApiError {
                     .into_response()
             }
             Self::Validation(err) => {
-                tracing::error!("Validation error: {err:?}");
+                tracing::warn!("Validation error: {err:?}");
                 let problem_details = shared::ProblemDetails::from(err);
                 (problem_details.status, axum::Json(problem_details)).into_response()
             }
             Self::NotFound { message } => {
-                tracing::error!("Not found: {message}");
+                tracing::info!("Not found: {message}");
 
                 (http::StatusCode::NOT_FOUND, axum::Json(self.to_string())).into_response()
             }
