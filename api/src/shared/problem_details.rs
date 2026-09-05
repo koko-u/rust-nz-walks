@@ -9,9 +9,9 @@ pub struct ProblemDetails {
     #[serde(serialize_with = "se_status")]
     #[schema(value_type = String)]
     pub status: http::StatusCode,
-    #[serde(skip_serializing_if = "Option::is_some")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub detail: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_some")]
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub errors: Option<FieldErrors>,
 }
 

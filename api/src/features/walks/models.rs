@@ -4,3 +4,4 @@ mod walk_id;
 
 pub use difficulty::Difficulty;
 pub use walk_id::WalkId;
+pub use walk::Walk;
