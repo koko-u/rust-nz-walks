@@ -13,13 +13,21 @@ SELECT "W"."id",
        "R"."code"      AS "region_code",
        "R"."name"      AS "region_name",
        "R"."image_url" AS "region_image_url",
-       "W".difficulty  AS "difficulty: _"
+       "W".difficulty
 FROM "walks" AS "W"
          INNER JOIN
      "regions" AS "R"
      ON
          "W"."region_id" = "R"."id"
+/*
 WHERE ($3::varchar IS NULL OR "W"."name" ILIKE '%' || $3::varchar || '%')
   AND ($4::difficulty IS NULL OR "W"."difficulty" = $4::difficulty)
   AND ($5::uuid IS NULL OR "W"."region_id" = $5::uuid)
+*/
+/*
+ORDER BY "W"."id" DESC
+*/
+/*
+LIMIT $1::bigint OFFSET $2::bigint
+*/
 

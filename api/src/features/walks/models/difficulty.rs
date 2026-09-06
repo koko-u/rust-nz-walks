@@ -4,6 +4,8 @@
     Copy,
     PartialEq,
     Eq,
+    Ord,
+    PartialOrd,
     Hash,
     derive_more::Display,
     derive_more::FromStr,

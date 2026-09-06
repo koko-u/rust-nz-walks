@@ -8,7 +8,7 @@ pub fn walks_router() -> axum::Router<state::AppState> {
         .route(
             "/",
             routing::MethodRouter::new()
-                .get(handlers::get_all_walks)
+                .get(handlers::get_walks_by_filters)
                 .post(handlers::create_walk),
         )
         .route(

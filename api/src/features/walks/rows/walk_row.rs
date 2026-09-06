@@ -1,5 +1,6 @@
 use crate::features::walks::models::Difficulty;
 
+#[derive(Debug, Clone, PartialEq, sqlx::FromRow)]
 pub struct WalkRow {
     pub id: uuid::Uuid,
     pub name: String,

@@ -11,7 +11,7 @@ use crate::features::walks::handlers::*;
     update_region,
     delete_region,
     create_walk,
-    get_all_walks,
+    get_walks_by_filters,
     get_walk_by_id,
     update_walk,
     delete_by_id,
