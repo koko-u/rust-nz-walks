@@ -1,6 +1,6 @@
-use api::config;
 use api::routers;
 use api::state;
+use api::{config, shared};
 use tower_http::trace;
 use tracing_subscriber::EnvFilter;
 
@@ -12,11 +12,11 @@ async fn main() -> eyre::Result<()> {
         )
         .init();
     let config = config::Config::new()?;
-    tracing::debug!("{config:?}");
 
     let state = state::AppState::new(&config.database_url(), config.max_connections()).await?;
+    let auth_layer = shared::create_auth_layer::<shared::AuthRole>(&config);
 
-    let app = routers::app_router()
+    let app = routers::app_router(auth_layer)
         .layer(trace::TraceLayer::new_for_http())
         .with_state(state);
 

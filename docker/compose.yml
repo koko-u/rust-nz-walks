@@ -37,6 +37,43 @@ services:
     entrypoint: [ "/bin/bash", "/pgadmin_entrypoint.sh" ]
     depends_on:
       - db
+  keycloak:
+    image: keycloak/keycloak:26.7
+    container_name: keycloak
+    restart: always
+    ports:
+      - "8085:8080"
+
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KEYCLOAK_ADMIN_USER}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://keycloak-db:5432/${KEYCLOAK_DB_NAME}
+      - KC_DB_USERNAME=${KEYCLOAK_DB_USER}
+      - KC_DB_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+
+    command:
+      - start-dev
+      - --import-realm
+
+    volumes:
+      - ./realm:/opt/keycloak/data/import:ro
+
+    depends_on:
+      - keycloak-db
+  keycloak-db:
+    image: postgres:18-trixie
+    container_name: keycloak-db
+    restart: always
+
+    environment:
+      - POSTGRES_USER=${KEYCLOAK_DB_USER}
+      - POSTGRES_PASSWORD=${KEYCLOAK_DB_PASSWORD}
+      - POSTGRES_DB=${KEYCLOAK_DB_NAME}
+
+    volumes:
+      - nz_walks_keycloak_data:/var/lib/postgresql
 volumes:
   nz_walks_db_data:
   nz_walks_pgadmin_data:
+  nz_walks_keycloak_data:

@@ -173,3 +173,7 @@ fabric.properties
 .envrc
 
 # End of https://www.toptal.com/developers/gitignore/api/direnv
+
+# test data
+users.json
+get-token.http

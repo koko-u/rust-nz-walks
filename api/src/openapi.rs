@@ -1,4 +1,5 @@
 use crate::features::health_check::handlers::*;
+use crate::features::me::handlers::*;
 use crate::features::regions::handlers::*;
 use crate::features::walks::handlers::*;
 
@@ -15,5 +16,6 @@ use crate::features::walks::handlers::*;
     get_walk_by_id,
     update_walk,
     delete_by_id,
+    get_me_info,
 ))]
 pub struct ApiDoc;

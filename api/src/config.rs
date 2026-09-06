@@ -24,6 +24,13 @@ pub struct Config {
     database_sslmode: SslMode,
     #[arg(long, env = "MAX_CONNECTIONS", default_value = "10")]
     max_connections: shared::MaxConnections,
+
+    #[arg(long, env = "KEYCLOAK_URL")]
+    keycloak_url: url::Url,
+    #[arg(long, env = "NZ_WALKS_REALM")]
+    realm: String,
+    #[arg(long, env = "NZ_WALKS_AUDIENCE")]
+    audience: String,
 }
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, derive_more::Display, derive_more::FromStr)]
@@ -66,6 +73,18 @@ impl Config {
 
     pub fn max_connections(&self) -> shared::MaxConnections {
         self.max_connections
+    }
+
+    pub fn keycloak_url(&self) -> &url::Url {
+        &self.keycloak_url
+    }
+
+    pub fn realm(&self) -> &str {
+        &self.realm
+    }
+
+    pub fn audience(&self) -> &str {
+        &self.audience
     }
 }
 
